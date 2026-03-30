@@ -492,8 +492,8 @@ def chart_material_comparison(model, scaler, tpms, process, rho, cs, meta):
             showlegend=False,
         ), row=1, col=ci)
     fig.update_xaxes(tickangle=-30, tickfont=dict(size=8))
-    fig.update_layout(
-        **_BASE,
+    layout = {**_BASE}
+    layout.update(dict(
         height=430,
         hovermode="closest",
         title=dict(
@@ -501,7 +501,8 @@ def chart_material_comparison(model, scaler, tpms, process, rho, cs, meta):
             font=dict(size=13, color="#1e293b"),
         ),
         margin=dict(l=55, r=20, t=80, b=110),
-    )
+    ))
+    fig.update_layout(**layout)
     return fig
 
 
@@ -559,8 +560,8 @@ def chart_inverse_scores(scores, best_tpms, sp, ep):
         textposition="auto",
         hovertemplate="<b>%{y}</b><br>Score: %{x:.5f}<extra></extra>",
     ))
-    fig.update_layout(
-        **_BASE,
+    layout = {**_BASE}
+    layout.update(dict(
         height=290,
         hovermode="closest",
         title=dict(
@@ -569,7 +570,8 @@ def chart_inverse_scores(scores, best_tpms, sp, ep):
         ),
         xaxis_title="Combined Score",
         margin=dict(l=90, r=20, t=65, b=45),
-    )
+    ))
+    fig.update_layout(**layout)
     return fig
 
 # ─────────────────────────────────────────────────────────────────────────────
