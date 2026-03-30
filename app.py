@@ -297,7 +297,6 @@ _BASE = dict(
     plot_bgcolor="white",
     font=dict(family="Inter, Segoe UI, sans-serif", size=11),
     margin=dict(l=55, r=20, t=70, b=50),
-    hovermode="x unified",
 )
 
 
@@ -357,6 +356,7 @@ def chart_sea(model, scaler, material, process, meta):
     fig.update_layout(
         **_BASE,
         height=380,
+        hovermode="x unified",
         title=dict(text=f"Specific Energy Absorption — {MATERIALS[material]['label']}",
                    font=dict(size=13, color="#1e293b")),
         xaxis_title="Relative Density ρ*",
