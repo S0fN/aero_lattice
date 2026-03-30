@@ -734,25 +734,14 @@ def build_feature_vector(tpms, material, process, rho, cs, source="FEA", meta=No
 
 
 def predict_properties(model, scaler, tpms, material, process, rho, cs, meta=None):
-    x    = build_feature_vector(tpms, material, process, rho, cs, meta=meta)
-    x_sc = scaler.transform(x)
+    # CHANGE source to "Synthetic" here!
+    x = build_feature_vector(tpms, material, process, rho, cs, source="Synthetic", meta=meta)
     
-    # 1. Get the raw prediction straight from the .pkl file
+    x_sc = scaler.transform(x)
     raw_pred = model.predict(x_sc)[0]
     
-    # --- 🚨 DEBUGGING BLOCK START 🚨 ---
-    print("\n" + "="*50)
-    print("🕵️ RAW SURROGATE OUTPUT (BEFORE MATH)")
-    print(f"Testing: {tpms} at rho={rho}")
-    print(f"Targets:   {TARGET_COLS}")
-    print(f"Raw Array: {raw_pred}")
-    print("="*50 + "\n")
-    # --- 🚨 DEBUGGING BLOCK END 🚨 ---
-    
-    # 2. Attempt the Log-Space inversion
-    import numpy as np
+    # Invert Log-Space
     pred = np.exp(raw_pred)
-    
     return {k: max(0.0, float(v)) for k, v in zip(TARGET_COLS, pred)}
 
 
