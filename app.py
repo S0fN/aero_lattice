@@ -639,7 +639,7 @@ with st.sidebar:
     rho_max            = st.slider("Max Allowable Density",       0.10, 0.60, 0.40, 0.01)
 
     st.markdown("---")
-    run_clicked = st.button("⚡ Run Analysis", use_container_width=True)
+    run_clicked = st.button("⚡ Run Analysis", width='stretch')
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Compute
@@ -769,10 +769,10 @@ with tabs[0]:
                 all_tpms_props,
                 title_suffix=f"{MATERIALS[material]['label']} · ρ*={rho:.2f} · {cs:.1f} mm",
             ),
-            use_container_width=True,
+            width='stretch',
         )
     with col_r:
-        st.plotly_chart(chart_radar(all_tpms_props), use_container_width=True)
+        st.plotly_chart(chart_radar(all_tpms_props), width='stretch')
 
     st.markdown('<p class="section-label">Selected Design — Full Summary</p>',
                 unsafe_allow_html=True)
@@ -792,7 +792,7 @@ with tabs[0]:
     }
     st.dataframe(
         pd.DataFrame([design_row]).T.rename(columns={0: "Value"}),
-        use_container_width=True,
+        width='stretch',
     )
 
     st.markdown('<p class="section-label">Cell Size Sensitivity</p>',
@@ -804,7 +804,7 @@ with tabs[0]:
     )
     st.plotly_chart(
         chart_cell_size(model, scaler, tpms, material, process, rho, meta),
-        use_container_width=True,
+        width='stretch',
     )
 
 # ── Tab 1: Inverse Design ─────────────────────────────────────────────────
@@ -839,24 +839,24 @@ with tabs[1]:
         }
         st.dataframe(
             pd.DataFrame([rec_table]).T.rename(columns={0: "Predicted"}),
-            use_container_width=True,
+            width='stretch',
         )
     with col_b:
         st.plotly_chart(chart_inverse_scores(scores, best_tpms, inv_sp, inv_ea),
-                        use_container_width=True)
+                        width='stretch')
 
     st.markdown('<p class="section-label">Performance Trade-off — Recommended Design</p>',
                 unsafe_allow_html=True)
     col_r1, col_r2 = st.columns([1, 1.65])
     with col_r1:
-        st.plotly_chart(chart_radar(inv_all), use_container_width=True)
+        st.plotly_chart(chart_radar(inv_all), width='stretch')
     with col_r2:
         st.plotly_chart(
             chart_property_bars(
                 inv_all,
                 title_suffix=f"ρ*={rho_sel:.2f} · {cs_sel:.1f} mm",
             ),
-            use_container_width=True,
+            width='stretch',
         )
 
 # ── Tab 2: Density Sweep ─────────────────────────────────────────────────
@@ -864,9 +864,9 @@ with tabs[2]:
     st.markdown('<p class="section-label">Property Sweep vs Relative Density</p>',
                 unsafe_allow_html=True)
     st.plotly_chart(chart_density_sweep(model, scaler, material, process, meta),
-                    use_container_width=True)
+                    width='stretch')
     st.plotly_chart(chart_sea(model, scaler, material, process, meta),
-                    use_container_width=True)
+                    width='stretch')
 
     with st.expander("📋 View sweep data table"):
         sweep_rows = []
@@ -882,7 +882,7 @@ with tabs[2]:
                 "SEA [kJ/kg]":       round(s, 3),
                 "Manufacturability": round(m, 4),
             })
-        st.dataframe(pd.DataFrame(sweep_rows), use_container_width=True)
+        st.dataframe(pd.DataFrame(sweep_rows), width='stretch')
 
 # ── Tab 3: Material Comparison ───────────────────────────────────────────
 with tabs[3]:
@@ -894,7 +894,7 @@ with tabs[3]:
     )
     st.plotly_chart(
         chart_material_comparison(model, scaler, tpms, process, rho, cs, meta),
-        use_container_width=True,
+        width='stretch',
     )
     st.markdown(
         '<div class="info-box">Each bar shows the predicted performance for a different '
@@ -913,7 +913,7 @@ with tabs[4]:
     )
     with st.spinner("Computing design space…"):
         st.plotly_chart(chart_pareto(model, scaler, material, process, meta),
-                        use_container_width=True)
+                        width='stretch')
     st.markdown(
         '<div class="info-box">'
         'Each point is a unique design configuration (TPMS family × relative density × cell size). '
