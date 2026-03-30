@@ -734,19 +734,15 @@ def build_feature_vector(tpms, material, process, rho, cs, source="FEA", meta=No
 
 
 def predict_properties(model, scaler, tpms, material, process, rho, cs, meta=None):
-    # 1. Prepare the input vector and scale it
     x    = build_feature_vector(tpms, material, process, rho, cs, meta=meta)
     x_sc = scaler.transform(x)
     
-    # 2. Generate the prediction in Log-Space
-    # The model now outputs ln(E*), ln(sigma_y), and ln(EA)
+    # 1. Prediction comes out in Log-Space (e.g., ln(29.1) ≈ 3.37)
     pred_log = model.predict(x_sc)[0]
     
-    # 3. Inverse-transform back to physical units
-    # np.exp() converts the natural log back to GPa and MPa
+    # 2. Inverse-transform using np.exp() to get real values (≈ 29.1 MPa)
     pred = np.exp(pred_log)
     
-    # 4. Map the results to the target columns
     return {k: max(0.0, float(v)) for k, v in zip(TARGET_COLS, pred)}
 
 
