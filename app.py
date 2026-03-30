@@ -325,8 +325,8 @@ def chart_density_sweep(model, scaler, material, process, meta):
         fig.add_trace(go.Scatter(y=S_v,  hovertemplate="ρ*=%{x:.2f}  σ_y=%{y:.3f} MPa<extra>" + tpms + "</extra>", **kw), row=1, col=2)
         fig.add_trace(go.Scatter(y=EA_v, hovertemplate="ρ*=%{x:.2f}  EA=%{y:.4f} MJ/m³<extra>" + tpms + "</extra>", **kw), row=1, col=3)
     fig.update_xaxes(title_text="Relative density ρ*")
-    fig.update_layout(
-        **_BASE,
+    layout = {**_BASE}
+    layout.update(dict(
         height=400,
         hovermode="x unified",
         title=dict(
@@ -336,7 +336,8 @@ def chart_density_sweep(model, scaler, material, process, meta):
         legend=dict(orientation="h", yanchor="bottom", y=1.1, xanchor="right", x=1,
                     font=dict(size=11)),
         margin=dict(l=55, r=20, t=90, b=50),
-    )
+    ))
+    fig.update_layout(**layout)
     return fig
 
 
