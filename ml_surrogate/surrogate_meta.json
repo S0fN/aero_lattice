@@ -69,21 +69,22 @@
     "LPBF",
     "EBM",
     "FDM",
-    "SLA"
+    "SLA",
+    "Material_Jetting"
   ],
-  "training_samples": 16320,
+  "training_samples": 20320,
   "lucie_validation": {
     "E_eff_GPa": {
-      "MAPE_%": 53.81,
-      "R2": 0.0381
+      "MAPE_%": 1100.08,
+      "R2": -0.6592
     },
     "sigma_y_MPa": {
-      "MAPE_%": 55.59,
-      "R2": -0.0026
+      "MAPE_%": 93.52,
+      "R2": -1.1151
     },
     "EA_vol_MJm3": {
-      "MAPE_%": 27.29,
-      "R2": 0.6577
+      "MAPE_%": 1070.47,
+      "R2": -7.4378
     }
   },
   "model": "GradientBoostingRegressor (MultiOutputRegressor)",

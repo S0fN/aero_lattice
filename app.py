@@ -130,18 +130,21 @@ hr { border: none; border-top: 1px solid #e2e8f0; margin: 1.2rem 0; }
 # ─────────────────────────────────────────────────────────────────────────────
 # Constants
 # ─────────────────────────────────────────────────────────────────────────────
+# ── Material database ──────────────────────────────────────────────────────
 MATERIALS = {
-    "Ti6Al4V":         {"E_s": 114.0, "sigma_s": 880.0,  "rho_s": 4430.0, "label": "Titanium Alloy (Ti6Al4V)"},
-    "AlSi10Mg":        {"E_s":  70.0, "sigma_s": 325.0,  "rho_s": 2670.0, "label": "Aluminium Alloy (AlSi10Mg)"},
-    "316L_SS":         {"E_s": 193.0, "sigma_s": 480.0,  "rho_s": 7900.0, "label": "Stainless Steel 316L"},
-    "PLA":             {"E_s":   3.5, "sigma_s":  65.0,  "rho_s": 1240.0, "label": "PLA Polymer"},
-    "TPU":             {"E_s":  0.04, "sigma_s":   8.0,  "rho_s": 1200.0, "label": "TPU Elastomer"},
-    "GPR":             {"E_s": 1.916, "sigma_s": 64.35,  "rho_s": 1180.0, "label": "GPR Resin"},
-    "HEC":             {"E_s": 1.001, "sigma_s": 30.75,  "rho_s": 1150.0, "label": "HEC Resin"},
-    "HTB":             {"E_s": 1.291, "sigma_s": 36.02,  "rho_s": 1200.0, "label": "HTB Resin"},
-    "DUR":             {"E_s": 1.260, "sigma_s": 32.00,  "rho_s": 1100.0, "label": "DUR Resin"},
-    "BMC":             {"E_s": 1.600, "sigma_s": 45.00,  "rho_s": 1170.0, "label": "BMC Composite"},
+    "Ti6Al4V":   {"E_s": 114.0, "sigma_s": 880.0, "rho_s": 4430.0, "label": "Titanium Alloy (Ti6Al4V)"},
+    "AlSi10Mg":  {"E_s":  70.0, "sigma_s": 325.0, "rho_s": 2670.0, "label": "Aluminium Alloy (AlSi10Mg)"},
+    "316L_SS":   {"E_s": 193.0, "sigma_s": 480.0, "rho_s": 7900.0, "label": "Stainless Steel 316L"},
+    "PLA":       {"E_s":   3.5, "sigma_s":  65.0, "rho_s": 1240.0, "label": "PLA Polymer"},
+    "TPU":       {"E_s":  0.04, "sigma_s":   8.0, "rho_s": 1200.0, "label": "TPU Elastomer"},
+    "GPR":       {"E_s": 1.916, "sigma_s": 64.35, "rho_s": 1180.0, "label": "GPR Resin"},
+    "HEC":       {"E_s": 1.001, "sigma_s": 30.75, "rho_s": 1150.0, "label": "HEC Resin"},
+    "HTB":       {"E_s": 1.291, "sigma_s": 36.02, "rho_s": 1200.0, "label": "HTB Resin"},
+    "DUR":       {"E_s": 1.260, "sigma_s": 32.00, "rho_s": 1100.0, "label": "DUR Resin"},
+    "BMC":       {"E_s": 1.600, "sigma_s": 45.00, "rho_s": 1170.0, "label": "BMC Composite"},
 }
+
+# ── AM process database ────────────────────────────────────────────────────
 PROCESSES = {
     "LPBF":             {"min_wall": 0.20, "surface_penalty": 0.05, "support_risk": 0.25, "label": "Laser Powder Bed Fusion (LPBF)"},
     "EBM":              {"min_wall": 0.40, "surface_penalty": 0.03, "support_risk": 0.15, "label": "Electron Beam Melting (EBM)"},
@@ -149,11 +152,13 @@ PROCESSES = {
     "SLA":              {"min_wall": 0.10, "surface_penalty": 0.02, "support_risk": 0.10, "label": "Stereolithography (SLA)"},
     "Material_Jetting": {"min_wall": 0.15, "surface_penalty": 0.03, "support_risk": 0.12, "label": "Material Jetting"},
 }
+
+# ── High-Fidelity TPMS Gibson-Ashby constants (USE THESE) ──────────────────
 TPMS_PARAMS = {
-    "gyroid":    {"C1": 0.300, "n1": 2.10, "C2": 0.300, "n2": 1.50, "ea_factor": 1.05},
-    "diamond":   {"C1": 0.350, "n1": 1.90, "C2": 0.350, "n2": 1.40, "ea_factor": 1.10},
-    "primitive": {"C1": 0.200, "n1": 2.30, "C2": 0.250, "n2": 1.60, "ea_factor": 0.90},
-    "iwp":       {"C1": 0.280, "n1": 2.00, "C2": 0.300, "n2": 1.50, "ea_factor": 1.00},
+    "gyroid":    {"C1": 0.293, "n1": 2.08, "C2": 0.253, "n2": 1.69, "ea_factor": 1.05},
+    "diamond":   {"C1": 0.352, "n1": 1.94, "C2": 0.291, "n2": 1.54, "ea_factor": 1.10},
+    "primitive": {"C1": 0.181, "n1": 2.21, "C2": 0.198, "n2": 1.78, "ea_factor": 0.90},
+    "iwp":       {"C1": 0.268, "n1": 2.03, "C2": 0.241, "n2": 1.71, "ea_factor": 1.00},
 }
 TARGET_COLS = ["E_eff_GPa", "sigma_y_MPa", "EA_vol_MJm3"]
 TARGET_LABELS = {
@@ -729,9 +734,19 @@ def build_feature_vector(tpms, material, process, rho, cs, source="FEA", meta=No
 
 
 def predict_properties(model, scaler, tpms, material, process, rho, cs, meta=None):
+    # 1. Prepare the input vector and scale it
     x    = build_feature_vector(tpms, material, process, rho, cs, meta=meta)
     x_sc = scaler.transform(x)
-    pred = model.predict(x_sc)[0]
+    
+    # 2. Generate the prediction in Log-Space
+    # The model now outputs ln(E*), ln(sigma_y), and ln(EA)
+    pred_log = model.predict(x_sc)[0]
+    
+    # 3. Inverse-transform back to physical units
+    # np.exp() converts the natural log back to GPa and MPa
+    pred = np.exp(pred_log)
+    
+    # 4. Map the results to the target columns
     return {k: max(0.0, float(v)) for k, v in zip(TARGET_COLS, pred)}
 
 
