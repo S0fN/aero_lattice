@@ -1077,7 +1077,11 @@ if not MODEL_LOADED:
 # Session state
 # ─────────────────────────────────────────────────────────────────────────────
 for key, default in [("results_ready", False), ("last_inputs", {}),
-                     ("stl_bytes", None), ("stl_label", "")]:
+                     ("stl_bytes", None), ("stl_label", ""),
+                     ("fea", {"approved": False, "err_E_pct": 0.0, "err_sigma_pct": 0.0,
+                              "fea_E": 0.0, "fea_sigma": 0.0,
+                              "approved_E": False, "approved_sigma": False,
+                              "material_scaled": False})]:
     if key not in st.session_state:
         st.session_state[key] = default
 
