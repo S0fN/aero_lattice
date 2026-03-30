@@ -1,0 +1,17 @@
+[server]
+# Remove 'port' and 'address' lines so it defaults to 8501
+headless = true
+enableCORS = false
+enableXsrfProtection = false
+maxUploadSize = 200
+
+[browser]
+gatherUsageStats = false
+# Remove 'serverAddress' and 'serverPort' lines
+
+[theme]
+base = "light"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f8f8f8"
+textColor = "#1a1a1a"
+font = "sans serif"
