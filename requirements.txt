@@ -4,3 +4,4 @@ scikit-learn==1.6.1
 joblib==1.5.3
 pandas>=2.0.0
 matplotlib>=3.7.0
+plotly>=5.18.0
