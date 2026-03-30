@@ -737,10 +737,10 @@ def predict_properties(model, scaler, tpms, material, process, rho, cs, meta=Non
     x    = build_feature_vector(tpms, material, process, rho, cs, meta=meta)
     x_sc = scaler.transform(x)
     
-    # 1. Prediction comes out in Log-Space (e.g., ln(29.1) ≈ 3.37)
+    # Get the log-prediction
     pred_log = model.predict(x_sc)[0]
     
-    # 2. Inverse-transform using np.exp() to get real values (≈ 29.1 MPa)
+    # Invert back to physical units
     pred = np.exp(pred_log)
     
     return {k: max(0.0, float(v)) for k, v in zip(TARGET_COLS, pred)}
