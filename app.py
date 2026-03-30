@@ -1044,6 +1044,11 @@ def chart_fea_validation(pred_E, pred_sigma, fea_E, fea_sigma,
 # ─────────────────────────────────────────────────────────────────────────────
 try:
     model, scaler, meta = load_surrogate()
+    # TEMP: print gold table calibration values — remove after use
+    for _t in ["gyroid","diamond","primitive","iwp"]:
+        for _r in [0.1,0.2,0.3,0.4,0.5,0.6]:
+            _p = predict_properties(model, scaler, _t, "Ti6Al4V", "LPBF", _r, 4.0, meta)
+            print(f'("{_t}", {_r}): ({_p["E_eff_GPa"]:.4f}, {_p["sigma_y_MPa"]:.4f}),')
     MODEL_LOADED = True
 except Exception as e:
     MODEL_LOADED = False
