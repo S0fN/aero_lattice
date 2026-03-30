@@ -442,10 +442,14 @@ def chart_cell_size(model, scaler, tpms, material, process, rho, meta):
     for ci, (vals, color, lbl) in enumerate(
         zip([E_v, S_v, EA_v], colors, ["E* [GPa]", "σ_y [MPa]", "EA [MJ/m³]"]), start=1
     ):
+        def _hex_to_rgba(hex_color, alpha=0.09):
+            h = hex_color.lstrip("#")
+            r, g, b = int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
+            return f"rgba({r},{g},{b},{alpha})"
         fig.add_trace(go.Scatter(
             x=cs_arr, y=vals, mode="lines",
             line=dict(color=color, width=2.5),
-            fill="tozeroy", fillcolor=color + "18",
+            fill="tozeroy", fillcolor=_hex_to_rgba(color),
             hovertemplate=f"cs=%{{x:.1f}} mm  {lbl}=%{{y:.4g}}<extra></extra>",
             showlegend=False,
         ), row=1, col=ci)
